@@ -25,33 +25,30 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
 
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [currentFocused, setCurrentFocused] = useState({
-    login: false,
-    email: false,
-    password: false,
-  });
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [currentFocused, setCurrentFocused] = useState("");
 
   const clearForm = () => {
     setLogin("");
     setEmail("");
     setPassword("");
   };
+
   const hideKeyboard = () => {
     Keyboard.dismiss();
-    console.log({ login, email, password });
-    clearForm();
-  };
-  const handleFocus = () => {
-    setIsShowKeyboard(true);
-    setCurrentFocused({
-      ...currentFocused,
-      login: true,
-    });
+    setCurrentFocused("");
   };
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible((prevState) => !prevState);
+  const handleFocus = (currentInput = "") => {
+    setCurrentFocused(currentInput);
+  };
+
+  const onSubmitUserRegister = () => {
+    if (!login || !email || !password)
+      return console.warn("Будь ласка заповніть поля");
+
+    console.log({ login, email, password });
+    hideKeyboard();
+    clearForm();
   };
 
   return (
@@ -71,96 +68,52 @@ export default function RegistrationScreen() {
               <Text style={styles.title}>Реєстрація</Text>
 
               <TextInput
-                style={{
-                  ...styles.inputField,
-                  backgroundColor: currentFocused.login ? "#ffffff" : "#f6f6f6",
-                  borderColor: currentFocused.login ? "#FF6C00" : "#e8e8e8",
-                }}
+                style={[
+                  styles.inputField,
+                  currentFocused === "login" && styles.inputCurrent,
+                ]}
                 placeholder="Логін"
                 inputMode="text"
-                onFocus={() => {
-                  setCurrentFocused({
-                    ...currentFocused,
-                    login: true,
-                  });
-                }}
-                onBlur={() => {
-                  setCurrentFocused({
-                    ...currentFocused,
-                    login: false,
-                  });
-                }}
+                onFocus={() => handleFocus("login")}
                 value={login}
                 onChangeText={setLogin}
               />
 
               <TextInput
-                style={{
-                  ...styles.inputField,
-                  backgroundColor: currentFocused.email ? "#ffffff" : "#f6f6f6",
-                  borderColor: currentFocused.email ? "#FF6C00" : "#e8e8e8",
-                }}
+                style={[
+                  styles.inputField,
+                  currentFocused === "email" && styles.inputCurrent,
+                ]}
                 placeholder="Адреса електронної пошти"
                 inputMode="email"
                 value={email}
-                // onFocus={() => setIsShowKeyboard(true)}
                 onChangeText={setEmail}
                 autoCapitalize="none"
-                onFocus={() => {
-                  setCurrentFocused({
-                    ...currentFocused,
-                    email: true,
-                  });
-                }}
-                onBlur={() => {
-                  setCurrentFocused({
-                    ...currentFocused,
-                    email: false,
-                  });
-                }}
+                onFocus={() => handleFocus("email")}
               />
-              {/* <View style={styles.passwordContainer}> */}
+
               <TextInput
-                style={{
-                  ...styles.inputField,
-                  borderColor: currentFocused.password ? "#FF6C00" : "#e8e8e8",
-                  ...styles.passwordInput,
-                  backgroundColor: currentFocused.password
-                    ? "#ffffff"
-                    : "#f6f6f6",
-                }}
+                style={[
+                  styles.inputField,
+                  currentFocused === "password" && styles.inputCurrent,
+                  styles.passwordInput,
+                ]}
                 placeholder="Пароль"
                 placeholderTextColor="#BDBDBD"
                 secureTextEntry={!passwordVisible}
-                onFocus={() => {
-                  setCurrentFocused({
-                    ...currentFocused,
-                    password: true,
-                  });
-                }}
-                onBlur={() => {
-                  setCurrentFocused({
-                    ...currentFocused,
-                    password: false,
-                  });
-                }}
+                onFocus={() => handleFocus("password")}
                 value={password}
                 onChangeText={setPassword}
               />
 
-              <TouchableOpacity
-                style={styles.showHidePasswordButton}
-                onPress={togglePasswordVisibility}
-              >
-                <Text style={styles.showHidePasswordButtonText}>
-                  {passwordVisible ? "Сховати" : "Показати"}
-                </Text>
+              <TouchableOpacity style={styles.showHidePasswordButton}>
+                <Text style={styles.showHidePasswordButtonText}>Показати</Text>
               </TouchableOpacity>
-              {/* </View> */}
+
               <TouchableOpacity
                 style={styles.registerButton}
                 activeOpacity={0.5}
-                onPress={hideKeyboard}
+                onPress={onSubmitUserRegister}
               >
                 <Text style={styles.registerButtonText}>Зареєстpуватися</Text>
               </TouchableOpacity>
@@ -233,6 +186,11 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     position: "relative",
+  },
+  inputCurrent: {
+    backgroundColor: "#ffffff",
+    borderColor: "#FF6C00",
+    borderWidth: 1,
   },
 
   registerButton: {

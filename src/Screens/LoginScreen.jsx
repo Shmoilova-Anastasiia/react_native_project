@@ -10,104 +10,104 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
-  Dimensions,
 } from "react-native";
 
 const backgroundImage = require("../assets/images/bgimage.png");
 
-const initialState = {
-  email: "",
-  password: "",
-};
-
 export default function LoginScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [state, setstate] = useState(initialState);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [currentFocused, setCurrentFocused] = useState("");
 
-  const hideKeyboard = () => {
-    setIsShowKeyboard(false);
-    Keyboard.dismiss();
-    console.log(state);
-    setstate(initialState);
+  const clearForm = () => {
+    setEmail("");
+    setPassword("");
   };
 
-  const handleMail = (value) =>
-    setstate((prevState) => ({ ...prevState, email: value }));
+  const hideKeyboard = () => {
+    Keyboard.dismiss();
+    setCurrentFocused("");
+  };
 
-  const handlePassword = (value) =>
-    setstate((prevState) => ({ ...prevState, password: value }));
+  const handleFocus = (currentInput = "") => {
+    setCurrentFocused(currentInput);
+  };
 
-  const [dimensions] = useState(Dimensions.get("window").width - 0 * 2);
-
+  const onSubmitUserRegister = () => {
+    if (!email || !password) return console.warn("Будь ласка заповніть поля");
+    console.log({ email, password });
+    hideKeyboard();
+    clearForm();
+  };
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevState) => !prevState);
   };
   return (
-    <View style={styles.container}>
-      <ImageBackground source={backgroundImage} style={styles.background}>
-        <TouchableWithoutFeedback onPress={hideKeyboard}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-            style={styles.keyboardAvoidingView}
-          >
-            <View
-              style={{
-                marginBottom: isShowKeyboard ? -170 : 0,
-                width: dimensions,
-              }}
-            >
-              <View style={styles.formContainer}>
-                <Text style={styles.title}>Увійти</Text>
+    <TouchableWithoutFeedback onPress={hideKeyboard}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <View style={styles.container}>
+          <ImageBackground source={backgroundImage} style={styles.background}>
+            <View style={styles.formContainer}>
+              <Text style={styles.title}>Увійти</Text>
 
-                <TextInput
-                  style={styles.inputField}
-                  placeholder="Адреса електронної пошти"
-                  inputMode="email"
-                  value={state.email}
-                  onFocus={() => setIsShowKeyboard(true)}
-                  onChangeText={handleMail}
-                  autoCapitalize="none"
-                />
+              <TextInput
+                style={[
+                  styles.inputField,
+                  currentFocused === "email" && styles.inputCurrent,
+                ]}
+                placeholder="Адреса електронної пошти"
+                inputMode="email"
+                value={email}
+                onFocus={() => handleFocus("email")}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+              />
 
-                <TextInput
-                  style={styles.inputField}
-                  placeholder="Пароль"
-                  placeholderTextColor="#BDBDBD"
-                  secureTextEntry={!passwordVisible}
-                  onFocus={() => setIsShowKeyboard(true)}
-                  value={state.password}
-                  onChangeText={handlePassword}
-                />
+              <TextInput
+                style={[
+                  styles.inputField,
+                  currentFocused === "password" && styles.inputCurrent,
+                  // styles.passwordInput,
+                ]}
+                placeholder="Пароль"
+                placeholderTextColor="#BDBDBD"
+                secureTextEntry={!passwordVisible}
+                onFocus={() => handleFocus("password")}
+                value={password}
+                onChangeText={setPassword}
+              />
 
-                <TouchableOpacity
-                  style={styles.showHidePasswordButton}
-                  onPress={togglePasswordVisibility}
-                >
-                  <Text style={styles.showHidePasswordButtonText}>
-                    {passwordVisible ? "Сховати" : "Показати"}
-                  </Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.showHidePasswordButton}
+                onPress={togglePasswordVisibility}
+              >
+                <Text style={styles.showHidePasswordButtonText}>Показати</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.loginButton}
-                  activeOpacity={0.5}
-                >
-                  <Text style={styles.loginButtonText}>Увійти</Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.loginButton}
+                activeOpacity={0.5}
+                onPress={onSubmitUserRegister}
+              >
+                <Text style={styles.loginButtonText}>Увійти</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity style={styles.signupLink} activeOpacity={0.5}>
-                  <Text style={styles.signupLinkText}>
-                    Немає акаунту? Зареєструватися
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity style={styles.signupLink} activeOpacity={0.5}>
+                <Text style={styles.signupLinkText}>
+                  Немає акаунту? Зареєструватися
+                </Text>
+              </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-      </ImageBackground>
-    </View>
+          </ImageBackground>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
   background: {
     flex: 1,
@@ -129,6 +130,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
   },
   keyboardAvoidingView: {
+    flex: 1,
     justifyContent: "flex-end",
   },
   title: {
@@ -148,6 +150,11 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     position: "relative",
+  },
+  inputCurrent: {
+    backgroundColor: "#ffffff",
+    borderColor: "#FF6C00",
+    borderWidth: 1,
   },
   loginButton: {
     backgroundColor: "#FF6C00",
