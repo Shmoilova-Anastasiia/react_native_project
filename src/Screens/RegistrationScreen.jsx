@@ -15,6 +15,9 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 
 const backgroundImage = require("../assets/images/bgimage.png");
+{
+  /* <AntDesign name="closecircleo" size={24} color="black" />; */
+}
 
 export default function RegistrationScreen() {
   const [fontsLoaded] = useFonts({
