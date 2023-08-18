@@ -49,6 +49,7 @@ export default function LoginScreen() {
     <TouchableWithoutFeedback onPress={hideKeyboard}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={-60}
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.container}>
@@ -87,7 +88,9 @@ export default function LoginScreen() {
                 style={styles.showHidePasswordButton}
                 onPress={togglePasswordVisibility}
               >
-                <Text style={styles.showHidePasswordButtonText}>Показати</Text>
+                <Text style={styles.showHidePasswordButtonText}>
+                  {passwordVisible ? "" : "Показати"}
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -123,6 +126,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   formContainer: {
+    paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     width: "100%",
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
   },
   inputField: {
     backgroundColor: "#F6F6F6",
-    width: 343,
+    width: "100%",
     height: 50,
     borderRadius: 8,
     padding: 16,
@@ -159,7 +163,7 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: "#FF6C00",
     height: 50,
-    width: 343,
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,

@@ -54,10 +54,15 @@ export default function RegistrationScreen() {
     clearForm();
   };
 
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prevState) => !prevState);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={hideKeyboard}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={-160}
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.container}>
@@ -109,8 +114,13 @@ export default function RegistrationScreen() {
                 onChangeText={setPassword}
               />
 
-              <TouchableOpacity style={styles.showHidePasswordButton}>
-                <Text style={styles.showHidePasswordButtonText}>Показати</Text>
+              <TouchableOpacity
+                style={styles.showHidePasswordButton}
+                onPress={togglePasswordVisibility}
+              >
+                <Text style={styles.showHidePasswordButtonText}>
+                  {passwordVisible ? "" : "Показати"}
+                </Text>
               </TouchableOpacity>
 
               <TouchableOpacity
