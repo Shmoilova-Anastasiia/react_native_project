@@ -5,9 +5,9 @@ import LoginScreen from "./src/Screens/LoginScreen";
 
 export default function App() {
   return (
-    // <RegistrationScreen />
+    <RegistrationScreen />
 
-    <LoginScreen />
+    // <LoginScreen />
     // <View style={styles.container}>
 
     //

@@ -49,7 +49,7 @@ export default function LoginScreen() {
     <TouchableWithoutFeedback onPress={hideKeyboard}>
       <KeyboardAvoidingView
         behavior={Platform.OS == "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={-60}
+        keyboardVerticalOffset={-160}
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.container}>
@@ -69,30 +69,33 @@ export default function LoginScreen() {
                 onChangeText={setEmail}
                 autoCapitalize="none"
               />
-
-              <TextInput
-                style={[
-                  styles.inputField,
-                  currentFocused === "password" && styles.inputCurrent,
-                  // styles.passwordInput,
-                ]}
-                placeholder="Пароль"
-                placeholderTextColor="#BDBDBD"
-                secureTextEntry={!passwordVisible}
-                onFocus={() => handleFocus("password")}
-                value={password}
-                onChangeText={setPassword}
-              />
-
-              <TouchableOpacity
-                style={styles.showHidePasswordButton}
-                onPress={togglePasswordVisibility}
+              <View
+                style={{
+                  width: "100%",
+                }}
               >
-                <Text style={styles.showHidePasswordButtonText}>
-                  {passwordVisible ? "" : "Показати"}
-                </Text>
-              </TouchableOpacity>
+                <TextInput
+                  style={[
+                    styles.inputField,
+                    currentFocused === "password" && styles.inputCurrent,
+                  ]}
+                  placeholder="Пароль"
+                  placeholderTextColor="#BDBDBD"
+                  secureTextEntry={!passwordVisible}
+                  onFocus={() => handleFocus("password")}
+                  value={password}
+                  onChangeText={setPassword}
+                />
 
+                <TouchableOpacity
+                  style={styles.showHidePasswordButton}
+                  onPress={togglePasswordVisibility}
+                >
+                  <Text style={styles.showHidePasswordButtonText}>
+                    {passwordVisible ? "Сховати" : "Показати"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={styles.loginButton}
                 activeOpacity={0.5}
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
   },
   signupLink: {
     marginTop: 16,
-    marginBottom: 66,
+    marginBottom: 140,
   },
   signupLinkText: {
     fontStyle: "normal",
@@ -185,11 +188,18 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: "#1B4371",
   },
-  showHidePasswordButtonText: {
+
+  showHidePasswordButton: {
     position: "absolute",
-    right: -170,
-    top: -35,
-    paddingRight: 10,
+    right: 0,
+    top: 13,
+    alignSelf: "center",
+
+    padding: 16,
+
+    backgroundColor: "transparent",
+  },
+  showHidePasswordButtonText: {
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,

@@ -99,30 +99,33 @@ export default function RegistrationScreen() {
                 autoCapitalize="none"
                 onFocus={() => handleFocus("email")}
               />
-
-              <TextInput
-                style={[
-                  styles.inputField,
-                  currentFocused === "password" && styles.inputCurrent,
-                  styles.passwordInput,
-                ]}
-                placeholder="Пароль"
-                placeholderTextColor="#BDBDBD"
-                secureTextEntry={!passwordVisible}
-                onFocus={() => handleFocus("password")}
-                value={password}
-                onChangeText={setPassword}
-              />
-
-              <TouchableOpacity
-                style={styles.showHidePasswordButton}
-                onPress={togglePasswordVisibility}
+              <View
+                style={{
+                  width: "100%",
+                }}
               >
-                <Text style={styles.showHidePasswordButtonText}>
-                  {passwordVisible ? "" : "Показати"}
-                </Text>
-              </TouchableOpacity>
+                <TextInput
+                  style={[
+                    styles.inputField,
+                    currentFocused === "password" && styles.inputCurrent,
+                  ]}
+                  placeholder="Пароль"
+                  placeholderTextColor="#BDBDBD"
+                  secureTextEntry={!passwordVisible}
+                  onFocus={() => handleFocus("password")}
+                  value={password}
+                  onChangeText={setPassword}
+                />
 
+                <TouchableOpacity
+                  style={styles.showHidePasswordButton}
+                  onPress={togglePasswordVisibility}
+                >
+                  <Text style={styles.showHidePasswordButtonText}>
+                    {passwordVisible ? "Сховати" : "Показати"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
               <TouchableOpacity
                 style={styles.registerButton}
                 activeOpacity={0.5}
@@ -232,14 +235,17 @@ const styles = StyleSheet.create({
     color: "#1B4371",
   },
 
-  passwordInput: {
-    position: "relative",
+  showHidePasswordButton: {
+    position: "absolute",
+    right: 0,
+    top: 13,
+    alignSelf: "center",
+
+    padding: 16,
+
+    backgroundColor: "transparent",
   },
   showHidePasswordButtonText: {
-    position: "absolute",
-    right: -190,
-    top: -35,
-    paddingRight: 10,
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
